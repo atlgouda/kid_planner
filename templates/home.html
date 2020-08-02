@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% for activity in activities %}
+        <article class="media content-section">
+                <div class="media-body">
+                  <div class="article-metadata">
+                    <span>{{ activity.category }}</span>
+                    <small class="text-muted">{{ activity.date_posted }}</small>
+                    <small class="text-muted" style="margin-left: 5px;"><a href='{{ activity.link }}'>Link</a></small>
+                  </div>
+                  <h2><a class="article-title" href="#">{{ activity.title }}</a></h2>
+                  <p class="article-content">{{ activity.description }}</p>
+                </div>
+              </article>
+    {% endfor %}
+{% endblock content %}

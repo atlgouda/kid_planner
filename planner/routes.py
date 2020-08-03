@@ -1,5 +1,5 @@
 from flask import render_template, url_for, flash, redirect
-from planner import app
+from planner import app, db, bcrypt
 from planner.forms import RegistrationForm, LoginForm
 from planner.models import User, Activity
 
@@ -32,8 +32,12 @@ def about():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        flash(f'Account created for {form.username.data}!', 'success')
-        return redirect(url_for('home'))
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        flash(f'Your account has been created! You are now able to log in.', 'success')
+        return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])

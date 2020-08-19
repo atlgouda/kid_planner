@@ -20,11 +20,11 @@ class User(db.Model, UserMixin):
 class Activity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    link = db.Column(db.String(500), nullable=True)
+    link = db.Column(db.String(500), nullable=True, default="#")
     category = db.Column(db.String(100), nullable=True)
     description = db.Column(db.String(), nullable=True)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f"Actifity('{self.title}', '{self.date_posted}')"
+        return f"Activity('{self.title}', '{self.date_posted}')"

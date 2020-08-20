@@ -25,8 +25,10 @@ from flask_login import login_user, current_user, logout_user, login_required
 # ]
 
 @app.route('/')
+@app.route('/home')
 def home():
-    activities = Activity.query.all()
+    page = request.args.get('page', 1, type=int)
+    activities = Activity.query.order_by(Activity.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', activities=activities)
 
 @app.route('/about')
@@ -148,3 +150,20 @@ def delete_activity(activity_id):
     db.session.commit()
     flash('Your activity has been deleted!', 'success')
     return redirect(url_for('home'))
+
+@app.route('/user/<string:username>')
+def user_activities(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    activities = Activity.query.filter_by(author=user)\
+        .order_by(Activity.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('user_activities.html', activities=activities, user=user)
+
+@app.route('/category/<string:category>')
+def category_activities(category):
+    page = request.args.get('page', 1, type=int)
+    activities = Activity.query.filter(Activity.category.ilike(category))\
+        .order_by(Activity.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('category_activities.html', activities=activities, category=category)

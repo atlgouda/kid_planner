@@ -4,8 +4,7 @@
     <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + activity.author.image_file) }}">
         <div class="media-body">
         <div class="article-metadata">
-            <!-- <span>{{ activity.category }}</span> -->
-            Posted by:  <a class="mr-2" href="#">{{ activity.author.username }}</a>
+            Posted by:  <a class="mr-2" href="{{ url_for('user_activities', username=activity.author.username) }}">{{ activity.author.username }}</a>
             <small class="text-muted">{{ activity.date_posted.strftime('%Y-%m-%d') }}</small>
             {% if activity.author == current_user %}
                 <div>
@@ -15,7 +14,7 @@
             {% endif %}
         </div>
         <h2 class="article-title">{{ activity.title }}</h2>
-        <small>Category:  <span>{{ activity.category }}</span></small><br>
+        <small>Category:  <a href="{{ url_for('category_activities', category=activity.category) }}">{{ activity.category }}</a></small><br>
         <a href='{{ activity.link }}' target="_blank">Activity Link</a>
         <p class="article-content">{{ activity.description }}</p>
         </div>

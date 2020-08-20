@@ -1,6 +1,8 @@
-from planner import db, login_manager
+from planner import db, login_manager, app
 from datetime import datetime
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin
+
 
 @login_manager.user_loader
 def load_user(user_id):

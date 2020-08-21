@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
@@ -21,8 +21,10 @@ app.config['MAIL_USERNAME'] = email_username
 app.config['MAIL_PASSWORD'] = email_password
 mail = Mail(app)
 
+from planner.users.routes import users
+from planner.activities.routes import activities
+from planner.main.routes import main
 
-
-# environment variables video
-
-from planner import routes
+app.register_blueprint(users)
+app.register_blueprint(activities)
+app.register_blueprint(main)
